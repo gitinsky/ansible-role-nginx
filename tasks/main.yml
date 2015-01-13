@@ -1,0 +1,9 @@
+- name: setup nginx
+  yum: name=nginx state=present
+
+- name: put nginx.conf
+  template: src=nginx/nginx.conf dest=/etc/nginx/nginx.conf owner=root group=root mode=0644
+  notify: reload nginx
+
+- name: start nginx
+  service: name=nginx state=started enabled=yes

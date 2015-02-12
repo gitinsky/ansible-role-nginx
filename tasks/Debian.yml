@@ -1,0 +1,19 @@
+---
+- name: apt-get update
+  apt: update_cache=yes
+  ignore_errors: True
+  tags:
+      - install
+
+- name: install required system packages
+  apt: name={{ item }} state=present
+  with_items:
+      - nginx
+  tags:
+      - install
+
+- name: Delete default nginx conf
+  file: dest=/etc/nginx/sites-enabled/default
+        state=absent
+  notify: nginx reload
+  when: nginx_no_default

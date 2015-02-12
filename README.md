@@ -22,7 +22,22 @@ For rpm-based system ```nginx.conf``` will be taken from templates.
   - role: nginx
 ```
 
-.. include::example/nginx.yml
+###### Putting your configuratins
+
+```
+- name: nginx mysite config
+  template: src=nginx/mysite.conf dest=/etc/nginx/sites-available/mysite.conf
+  notify: reload nginx
+  tags:
+      - config
+
+- name: enable nginx mysite config
+  file: state=link src=../sites-available/mysite.conf dest=/etc/nginx/sites-enabled/mysite.conf
+  notify: reload nginx
+  tags:
+      - config
+
+```
 
 # Notes
 Tested on ubuntu 14.04 and CentOS 6.5, ansible 1.8.2

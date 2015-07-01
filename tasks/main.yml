@@ -3,6 +3,8 @@
 - include: RedHat.yml
   when: ansible_os_family  == "RedHat"
 
+- debug: var=ansible_os_family
+
 # Debian specific package installations
 - include: Debian.yml
   when: ansible_os_family  == "Debian"

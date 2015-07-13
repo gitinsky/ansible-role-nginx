@@ -5,12 +5,24 @@
   tags:
       - install
 
-- name: install required system packages
-  apt: name={{ item }} state=present
-  with_items:
-      - nginx
+- name: Add nginx PPA and update apt cache
+  apt_repository:
+    repo: ppa:nginx/stable
+    update_cache: yes
+    state: present
   tags:
       - install
+
+- name: install required system packages
+  apt: name={{ item }} state=latest
+  with_items:
+      - nginx-extras
+  tags:
+      - install
+
+- name: remove wrong upstart script
+  file: dest=/etc/init/nginx.conf
+        state=absent
 
 - name: Delete default nginx conf
   file: dest=/etc/nginx/sites-enabled/default

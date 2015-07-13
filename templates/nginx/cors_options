@@ -1,0 +1,8 @@
+# {{ ansible_managed }}
+# Handle a CORS preflight OPTIONS request
+# without passing it through to the proxied server
+if ($request_method = OPTIONS ) {
+  add_header Content-Length 0;
+  add_header Content-Type text/plain;
+  return 204;
+}

@@ -42,6 +42,6 @@
   notify: nginx reload
   when: nginx_no_default
 
-- name: put nginx.conf
+- name: put /etc/nginx/cors_options
   template: src=nginx/cors_options dest=/etc/nginx/cors_options
   notify: reload nginx

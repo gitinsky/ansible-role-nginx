@@ -36,6 +36,10 @@
   file: dest=/etc/init/nginx.conf
         state=absent
 
+- name: put /etc/nginx/nginx.conf
+  template: src=nginx/nginx-debian.conf dest=/etc/nginx/nginx.conf
+  notify: reload nginx
+
 - name: Delete default nginx conf
   file: dest=/etc/nginx/sites-enabled/default
         state=absent

@@ -1,4 +1,5 @@
 ---
+nginx_configure_servername_localhost: True
 nginx_pid_file: /run/nginx.pid;
 nginx_no_default: yes
 root: /usr/share/nginx/html

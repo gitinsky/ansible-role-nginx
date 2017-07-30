@@ -1,3 +1,9 @@
 ---
+nginx_configure_servername_localhost: True
+nginx_pid_file: /run/nginx.pid;
 nginx_no_default: yes
 root: /usr/share/nginx/html
+nginx_centos7_rpm: nginx
+nginx_conf_dir: /etc/nginx
+nginx_conf_file: nginx.conf
+nginx_service_name: nginx

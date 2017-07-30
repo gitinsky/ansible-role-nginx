@@ -10,5 +10,5 @@
   when: ansible_os_family  == "Debian"
 
 - name: start nginx
-  service: name=nginx state=started enabled=yes
+  service: name={{ nginx_service_name }} state=started enabled=yes
   ignore_errors: true

@@ -17,7 +17,7 @@ For rpm-based system ```nginx.conf``` will be taken from templates.
 ```
 ---
 - hosts: nginx
-  sudo: yes
+  become: yes
   roles:
   - role: nginx
 ```

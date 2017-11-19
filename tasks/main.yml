@@ -1,12 +1,12 @@
 ---
 # CentOS specific package installations
-- include: RedHat.yml
+- include_tasks: RedHat.yml
   when: ansible_os_family  == "RedHat"
 
 - debug: var=ansible_os_family
 
 # Debian specific package installations
-- include: Debian.yml
+- include_tasks: Debian.yml
   when: ansible_os_family  == "Debian"
 
 - name: start nginx

@@ -1,0 +1,57 @@
+---
+- name: Add nginx PPA and update apt cache (Ubuntu)
+  apt_repository:
+    repo: ppa:nginx/stable
+    update_cache: yes
+    state: present
+  when: ansible_distribution == "Ubuntu"
+  tags:
+      - install
+
+- name: Add nginx official repo key (Debian)
+  apt_key: url=http://nginx.org/keys/nginx_signing.key
+  tags:
+      - install
+
+- name: Add nginx official repo (Debian)
+  apt_repository:
+    repo: "{{ item }} http://nginx.org/packages/debian/ {{ ansible_distribution_release }} nginx"
+    update_cache: yes
+    state: present
+  with_items:
+    - deb
+    - deb-src
+  when: ansible_distribution == "Debian"
+  tags:
+      - install
+
+- name: install required system packages
+  apt: name={{ item }} state=latest
+  with_items:
+      - "nginx{{ '-extras' if ansible_distribution != 'Debian' else '-full' }}"
+  tags:
+      - install
+
+- name: remove wrong upstart script
+  file: dest=/etc/init/nginx.conf
+        state=absent
+
+- name: put /etc/nginx/nginx.conf
+  template: src=nginx/nginx-debian.conf dest=/etc/nginx/nginx.conf backup=yes
+  notify: reload nginx
+
+- name: Delete default nginx conf
+  file: dest=/etc/nginx/sites-enabled/default
+        state=absent
+  notify: nginx reload
+  when: nginx_no_default
+
+- name: put /etc/nginx/cors_options
+  template: src=nginx/cors_options dest=/etc/nginx/cors_options backup=yes
+  notify: reload nginx
+
+- name: create /etc/systemd/system/nginx.service.d
+  file: state=directory dest=/etc/systemd/system/nginx.service.d
+
+- name: put /etc/systemd/system/nginx.service.d/limits.conf
+  template: src=limits.conf dest=/etc/systemd/system/nginx.service.d/limits.conf backup=yes

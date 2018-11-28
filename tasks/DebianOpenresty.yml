@@ -1,0 +1,31 @@
+---
+- name: Add openresty official repo key (Debian)
+  apt_key: url=https://openresty.org/package/pubkey.gpg
+  tags:
+      - install
+
+- name: Add openresty repo and update apt cache (Ubuntu)
+  apt_repository:
+    repo: "deb http://openresty.org/package/ubuntu {{ ansible_lsb.codename }} main"
+    update_cache: yes
+    state: present
+  when: ansible_distribution == "Ubuntu"
+  tags:
+      - install
+
+- name: install required system packages
+  apt: name={{ item }} state=latest
+  with_items:
+      - "openresty"
+  tags:
+      - install
+
+- name: put /etc/openresty/nginx.conf
+  template: src=nginx/openresty-debian.conf dest=/etc/openresty/nginx.conf backup=yes
+  notify: reload nginx
+
+- name: create /etc/systemd/system/openresty.service.d
+  file: state=directory dest=/etc/systemd/system/openresty.service.d
+
+- name: put /etc/systemd/system/openresty.service.d/limits.conf
+  template: src=limits.conf dest=/etc/systemd/system/openresty.service.d/limits.conf backup=yes

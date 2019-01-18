@@ -1,4 +1,8 @@
 ---
+- name: checkout nginx-lua-prometheus
+  git: repo='https://github.com/knyar/nginx-lua-prometheus.git' dest=/var/lib/nginx-lua-prometheus/
+  when: nginx_lua_prometheus
+
 - include_tasks: DebianOpenresty.yml
   when: nginx_openresty
 

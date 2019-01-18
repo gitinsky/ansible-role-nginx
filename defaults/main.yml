@@ -8,3 +8,4 @@ nginx_centos7_rpm: nginx
 nginx_conf_dir: /etc/nginx
 nginx_conf_file: nginx.conf
 nginx_service_name: nginx
+nginx_lua_prometheus: False
